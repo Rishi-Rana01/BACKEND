@@ -1,0 +1,39 @@
+ #Steps for user registeration
+
+ GET user details from frontend
+validation- not empty
+user already exsist
+check for images, chek for avatar
+upload them to cloudianry,avatar
+create user object - create entry in db
+remove password and refresh tocken field from response
+check for user creation
+return response , res
+
+************************************************************
+
+#File Handling in routes
+
+injacting middleware for upload avatar, coverImage
+multer-upload - middleware
+userRouter.route("/register").post(upload.fields([
+    {
+        name: "avatar",
+        maxCount: "1"
+    },
+    {
+        name:"coverImage",
+        maxCount: 1
+    }
+
+]), registerUser)
+
+**********************************************************
+
+
+req.files?.avatar[0]?.path   // ?-means- optional
+
+ ************************************
+ const existedUser = User.findOne({
+    $or:[{ username },{ email }] // using $or it chek for both - if it is exsist already in db or not 
+   })
