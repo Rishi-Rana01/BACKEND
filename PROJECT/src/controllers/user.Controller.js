@@ -98,7 +98,9 @@ const loginUser = asyncHandler(async(req, res)=>{
 
   if(!user){
     throw new ApiError(404,"User does not exsist")
+
   }
+  console.log("User found:", user.username);
 
   const isPasswordValid=await user.isPasswordCorrect(password)
 
@@ -203,6 +205,7 @@ const updateAccountDetails = asyncHandler(async(req,res)=>{
 
   if (!fullName || !email) {
     throw new ApiError(400, " All field are required")
+    
   }
 
   const user = await User.findByIdAndUpdate(
@@ -262,8 +265,11 @@ const getUserChannelProfile = asyncHandler(async(req,res)=>{
   const {username} = req.params
 
   if (!username?.trim()) {
-    throw new ApiError(400, "Username is missing");  
+    throw new ApiError(400, "Username is missing")
+    
   }
+  console.log("Fetching channel profile for username:", username);
+  
 
   const channel = await User.aggregate([
     {
@@ -291,7 +297,7 @@ const getUserChannelProfile = asyncHandler(async(req,res)=>{
           $size: "$subscribers"
         },
         channelsSubscribedToCount:{
-          $size: "subscribedTo"
+          $size: "$subscribedTo"
         },
         isSubscribed:{
           $cond: {
